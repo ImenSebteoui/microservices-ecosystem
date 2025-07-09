@@ -1,0 +1,137 @@
+version: '3.9'
+
+name: distributedapp
+
+networks:
+  distributedapp:
+    driver: bridge
+
+volumes:
+  mongodb-data:
+  maven-repo:
+  keycloak-data:
+
+services:
+
+  distributedapp-config-server:
+    container_name: distributedapp-config-server
+    build:
+      context: ./configServer
+    ports:
+      - "8888:8888"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      GIT_USERNAME: ImenSebteoui
+      GIT_PASSWORD: 
+    networks:
+      - distributedapp
+
+  distributedapp-discovery-server:
+    container_name: distributedapp-discovery-server
+    build:
+      context: ./Eureka_Discovery_Server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - distributedapp-config-server
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      CONFIG_SERVER_URL: http://distributedapp-config-server:8888
+    networks:
+      - distributedapp
+
+  distributedapp-api-gateway:
+    container_name: distributedapp-api-gateway
+    build:
+      context: ./API_Gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - distributedapp-config-server
+      - distributedapp-discovery-server
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      CONFIG_SERVER_URL: http://distributedapp-config-server:8888
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://distributedapp-discovery-server:8761/eureka/
+    networks:
+      - distributedapp
+
+  distributedapp-user-management:
+    container_name: distributedapp-user-management
+    build:
+      context: ./user-management-microservices
+    ports:
+      - "9090:9090"
+    depends_on:
+      - distributedapp-config-server
+      - distributedapp-discovery-server
+      - mysql
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      CONFIG_SERVER_URL: http://distributedapp-config-server:8888
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://distributedapp-discovery-server:8761/eureka/
+    volumes:
+      - maven-repo:/root/.m2
+    networks:
+      - distributedapp
+
+  distributedapp-claim-management:
+    container_name: distributedapp-claim-management
+    build:
+      context: ./reclamation-management-microservice-main
+    ports:
+      - "9091:9091"
+    depends_on:
+      - distributedapp-config-server
+      - distributedapp-discovery-server
+      - mongo
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      CONFIG_SERVER_URL: http://distributedapp-config-server:8888
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://distributedapp-discovery-server:8761/eureka/
+    volumes:
+      - maven-repo:/root/.m2
+    networks:
+      - distributedapp
+
+  mysql:
+    container_name: distributedapp-mysql
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: user-sebteoui
+      MYSQL_USER: user-sebteoui
+      MYSQL_PASSWORD: root
+    networks:
+      - distributedapp
+
+  mongo:
+    container_name: distributedapp-mongo
+    image: mongo:6.0
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - distributedapp
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.4
+    container_name: distributedapp-keycloak
+    command: start-dev --import-realm
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./keycloak/realm-export:/opt/keycloak/data/import
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_PORT: 8081 
+      KC_HOSTNAME_PORT: 8081     
+      KC_HTTP_ENABLED: "true"
+    networks:
+      - distributedapp

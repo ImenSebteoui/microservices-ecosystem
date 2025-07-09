@@ -1,0 +1,16 @@
+server:
+  port: 9091
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/claim-db-sebteoui
+
+  security:
+    user:
+      name: admin
+      password: admin
+
+  docker:
+    compose:
+      enabled: false

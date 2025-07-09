@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: Claim-management
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/claim-db-sebteoui
+  docker:
+    compose:
+      enabled: false
+  security:
+    user:
+      name: admin
+      password: admin
+
+server:
+  port: 9091

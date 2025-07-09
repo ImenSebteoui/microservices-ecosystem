@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: claim-management
+  cloud:
+    config:
+      uri: http://config-server:8888
+      name: claim-management
+      profile: docker
+      fail-fast: true
+      label: main

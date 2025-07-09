@@ -1,0 +1,22 @@
+{
+  "realm": "distributedapp",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "user-service",
+      "secret": "user-secret",
+      "enabled": true,
+      "directAccessGrantsEnabled": true,
+      "publicClient": false,
+      "redirectUris": ["*"]
+    },
+    {
+      "clientId": "claim-service",
+      "secret": "claim-secret",
+      "enabled": true,
+      "directAccessGrantsEnabled": true,
+      "publicClient": false,
+      "redirectUris": ["*"]
+    }
+  ]
+}

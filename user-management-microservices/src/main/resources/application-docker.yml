@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: user-management
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URL:http://localhost:8888/}
+      name: user-management
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh

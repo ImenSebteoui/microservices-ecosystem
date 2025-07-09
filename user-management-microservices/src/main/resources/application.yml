@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: user-management
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URL:http://localhost:8888/}
+      name: user-management
+      profile: docker
+      fail-fast: true
+      label: main
+
+logging:
+  level:
+    org.springframework.cloud.config: DEBUG

@@ -1,0 +1,198 @@
+{
+  "info": {
+    "name": "User & Reclamation API",
+    "description": "Test all endpoints including Feign client call via API Gateway",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user1@example.com\",\n  \"password\": \"test123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/user-management/api/users",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["user-management", "api", "users"]
+        }
+      }
+    },
+    {
+      "name": "Get User By ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/user-management/api/users/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["user-management", "api", "users", "1"]
+        }
+      }
+    },
+    {
+      "name": "Get User By Email",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/user-management/api/users/email/user1@example.com",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["user-management", "api", "users", "email", "user1@example.com"]
+        }
+      }
+    },
+    {
+      "name": "Get All Users",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/user-management/api/users",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["user-management", "api", "users"]
+        }
+      }
+    },
+    {
+      "name": "Update User",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Updated\",\n  \"lastName\": \"User\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/user-management/api/users/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["user-management", "api", "users", "1"]
+        }
+      }
+    },
+    {
+      "name": "Delete User",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:8080/user-management/api/users/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["user-management", "api", "users", "1"]
+        }
+      }
+    },
+    {
+      "name": "Get Reclamations by User ID (Feign)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/user-management/api/users/1/reclamations",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["user-management", "api", "users", "1", "reclamations"]
+        }
+      }
+    },
+    {
+      "name": "Create Reclamation",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Issue title\",\n  \"description\": \"Description here\",\n  \"image\": \"http://example.com/img.png\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/claim-management/api/reclamations/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["claim-management", "api", "reclamations", "1"]
+        }
+      }
+    },
+    {
+      "name": "Get All Reclamations",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/claim-management/api/reclamations",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["claim-management", "api", "reclamations"]
+        }
+      }
+    },
+    {
+      "name": "Get Reclamation by ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/claim-management/api/reclamations/123",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["claim-management", "api", "reclamations", "123"]
+        }
+      }
+    },
+    {
+      "name": "Get Reclamations by User ID (direct)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/claim-management/api/reclamations/user/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["claim-management", "api", "reclamations", "user", "1"]
+        }
+      }
+    },
+    {
+      "name": "Update Reclamation",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated Title\",\n  \"description\": \"Updated Description\",\n  \"image\": \"http://example.com/new-img.png\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/claim-management/api/reclamations/123",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["claim-management", "api", "reclamations", "123"]
+        }
+      }
+    },
+    {
+      "name": "Delete Reclamation",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:8080/claim-management/api/reclamations/123",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["claim-management", "api", "reclamations", "123"]
+        }
+      }
+    }
+  ]
+}
